@@ -15,6 +15,8 @@ app.use('/client',express.static(__dirname + "/client"));
 
 ///////////////////////////////////////////////////////////////SERVER STUFF
 var clients = [];
+var commands = ["/help - list all user commands", "/nick <name> - you can change your username", "/color <hex> - change your color", "/join <room> - switch to a different chat room", "/leave - leave your current chat room", "/list - list all open rooms", "/room - tells you what room you're in", "/clear - clear all chat messages"];
+var rooms = [{name: "default", users: 0, private: false, password: ""},];
 
 io.sockets.on('connection', function(socket){
     console.log('[SERVER] New client connected (id: ' + socket.id + ').');
@@ -37,6 +39,7 @@ io.sockets.on('connection', function(socket){
     					clients[k].username = data.un;
     					clients[k].room = "default";
     					socket.join(clients[k].room);
+                        rooms[0].users++;
     					clients[k].color = "eeeeee";
     					socket.emit('A');
     					io.sockets.in(clients[k].room).emit('BU', {
@@ -52,7 +55,7 @@ io.sockets.on('connection', function(socket){
     });//end of user connection event
 
     //M - Incoming Message from Client
-    //OUTPUT: BM - Broadcast Message | BN - Broadcast Name | BC - Broadcast Color | BJ - Broadcast Join | BL - Broadcast Leave
+    //OUTPUT: BM - Broadcast Message | BN - Broadcast Name | BC - Broadcast Color | BJ - Broadcast Join | BL - Broadcast Leave | BR - Broadcast Room | BH - Broadcast Help | BCR - Broadcast Clear Request
     //We need to take the incoming message and relay it to everyone is the smae room as the sender.
     socket.on('M', function(data){
     	for(var k = 0; k < clients.length; k++){
@@ -80,7 +83,7 @@ io.sockets.on('connection', function(socket){
     						}
     					}else{
     						if(isHex(newColor)){
-    							clients[k].color = color;
+    							clients[k].color = newColor;
 
     							io.sockets.in(clients[k].room).emit('BC', {
     								username: clients[k].username,
@@ -105,7 +108,7 @@ io.sockets.on('connection', function(socket){
     				}
     				else if(cmd.toLowerCase().indexOf("join ") == 0){
     					var cmd = data.message.substr(6);
-
+                        var oldRoom = clients[k].room;
     					if(cmd.indexOf("#") == 0){
     						var roomName = cmd.substr(1);
 
@@ -114,16 +117,39 @@ io.sockets.on('connection', function(socket){
     							username: clients[k].username,
     							room: roomName
     						});
-    						socket.leave(oldRoom);
     						clients[k].room = roomName;
     						socket.join(clients[k].room);
+                            socket.leave(oldRoom);
     						io.sockets.in(clients[k].room).emit('BJ', {
     							username: clients[k].username,
     							color: clients[k].color,
     							room: clients[k].room
     						});
+
+                            for(var x = 0; x < rooms.length; x++){
+                                if(rooms[x].name == oldRoom){
+                                    rooms[x].users--;
+
+                                    if(rooms[x].users <= 0 && rooms[x].name != "default"){
+                                        rooms.splice(rooms.indexOf(x));
+                                    }
+                                }
+
+                                //If the room already exist we just add a user to the user count
+                                if(clients[k].room == rooms[x].name){
+                                    rooms[x].users++;
+                                    return;
+                                }
+
+                                //We hit the end of all rooms, add this new room to the list
+                                if(x == rooms.length - 1){
+                                    var newRoom = {name: clients[k].room, users: 1, private: false, password: ""};
+                                    rooms.push(newRoom);
+                                    return;
+                                }
+                            }
 	
-	    						console.log("[ROOM: " + clients[k].room +"] " + clients[k]	.username + " has joined room #" + clients[k].room);
+	    					console.log("[ROOM: " + clients[k].room +"] " + clients[k]	.username + " has joined room #" + clients[k].room);
     					}//end of # name
     					else{
     						//Inform users that a client left the room
@@ -131,41 +157,109 @@ io.sockets.on('connection', function(socket){
     							username: clients[k].username,
     							room: cmd
     						});
-    						socket.leave(oldRoom);
     						clients[k].room = cmd;
     						socket.join(clients[k].room);
+                            socket.leave(oldRoom);
     						io.sockets.in(clients[k].room).emit('BJ', {
     							username: clients[k].username,
     							color: clients[k].color,
     							room: clients[k].room
     						});
-	
-	    						console.log("[ROOM: " + clients[k].room +"] " + clients[k]	.username + " has joined room #" + clients[k].room);
+	                           
+                            for(var x = 0; x < rooms.length; x++){
+                                if(rooms[x].name == oldRoom){
+                                    rooms[x].users--;
+
+                                    if(rooms[x].users <= 0 && rooms[x].name != "default"){
+                                        rooms.splice(rooms.indexOf(x));
+                                    }
+                                }
+
+                                //If the room already exist we just add a user to the user count
+                                if(clients[k].room == rooms[x].name){
+                                    rooms[x].users++;
+                                    return;
+                                }
+
+                                //We hit the end of all rooms, add this new room to the list
+                                if(x == rooms.length - 1){
+                                    var newRoom = {name: clients[k].room, users: 1, private: false, password: ""};
+                                    rooms.push(newRoom);
+                                    return;
+                                }
+                            }
+
+	    					console.log("[ROOM: " + clients[k].room +"] " + clients[k]	.username + " has joined room #" + clients[k].room);
     					}
 
     					
     				}
     				else if(cmd.toLowerCase().indexOf("leave") == 0){
-    					var cmd = data.message.substr(5);
-    					var oldRoom = clients[k].room;
-
+    					var cmd = "default";
+                        var oldRoom = clients[k].room;
     					//Inform users that a client left the room
     					io.sockets.in(clients[k].room).emit('BL', {
     						username: clients[k].username,
     						room: cmd
     					});
-
-    					clients[k].room = 'default';
-    					socket.leave(oldRoom);
-
+    					
+                        clients[k].room = 'default';
     					//Client rejoined the default room after leaving
     					socket.join(clients[k].room);
+                        //console.log(oldRoom + " : " + clients[k].room);
+                        socket.leave(oldRoom);
     					io.sockets.in(clients[k].room).emit('BJ', {
     						username: clients[k].username
     					});
 
+                        //loop through all the rooms until it matches our clients old room, then remove the user, if it hits 0 we need to remove th room from the list
+                        for(var x = 0; x < rooms.length; x++){
+                            if(rooms[x].name == 'default') rooms[x].users++;
+                            if(oldRoom == rooms[x].name && oldRoom != "default"){
+                                rooms[x].users--;
+
+                                if(rooms[x].users <= 0){
+                                    rooms.splice(rooms.indexOf(x));
+                                    return;
+                                }
+                            }
+                        }
+
     					console.log("[ROOM: " + clients[k].room +"] " + clients[k].username + " has joined room #" + clients[k].room);
     				}
+                    else if(cmd.toLowerCase().indexOf("help") == 0){
+                        //loop through the help command array and send all the strings to the client
+                        for(var x = 0; x < commands.length; x++){
+                            io.to(clients[k].id).emit('BH', {
+                                cmd: commands[x],
+                            });
+                        }
+
+                        console.log("[ROOM: " + clients[k].room +"] " + clients[k].username + " asked for help");
+                    }
+                    else if(cmd.toLowerCase().indexOf("room") == 0){
+                        //tell the user what room they are in
+                        io.to(clients[k].id).emit('BR', {
+                                room: clients[k].room,
+                        });
+                        console.log("[ROOM: " + clients[k].room +"] " + clients[k].username + " asked what room they are in");
+                    }
+                    else if(cmd.toLowerCase().indexOf("list") == 0){
+                        //loop through all possible rooms and send their name and current user count
+                        for(var x = 0; x < rooms.length; x++){
+                            io.to(clients[k].id).emit('BRL', {
+                                room: rooms[x].name,
+                                users: rooms[x].users,
+                            });
+                        }
+
+                        console.log("[ROOM: " + clients[k].room +"] " + clients[k].username + " asked for the list of rooms");
+                    }
+                    else if(cmd.toLowerCase().indexOf("clear") == 0){
+                        //tell the user what room they are in
+                        io.to(clients[k].id).emit('BCR');
+                        console.log("[ROOM: " + clients[k].room +"] " + clients[k].username + " cleared their chat log");
+                    }
     			}
     			else{
     				//console.log("I should send a BM message");
