@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#site-wrapper{
+    width: 100vw;
+    height: 100vh;
+}
+
+body{
+    background-color: #181818;
+    overflow: hidden;
+}
+
+#login{
+    width: 400px;
+    height: 10px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#error{
+    color: #d93b3b;
+    font-size: 12px;
+    width: 400px;
+    text-align: center;
+    position: relative;
+    margin: 0px auto 0px;
+    top: -100px;
+}
+
+#username{
+    height: 25px;
+    width: 200px;
+    margin: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    position: relative;
+    display: block;
+    border: solid 1px #484848;
+    color: #eee;
+    background-color: #272727;
+}
+
+#connect{
+    margin: 20px auto 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+    position: relative;
+    display: block;
+    border: solid 1px #484848;
+    color: #eee;
+    background-color: #272727;
+}
+
+#connect:hover{
+    background-color: #2f2f2f;
+    transition: all ease 0.25s;
+}
+
+#connect:active{
+    background-color: #383838;
+}
+
+#chat{
+    width: 1000px;
+    height: 10px;
+    position: relative;
+    margin: 100px auto 0px;
+}
+
+#messages{
+    width: 900px;
+    height: 700px;
+    background-color: #292929;
+    margin: 0px auto 0px;
+    border: solid 1px #484848;
+    list-style-type: none; 
+    padding: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#messages li {
+    padding: 5px 10px; 
+    font-size: 14px;
+    font-family: sans-serif;
+}
+#messages li:nth-child(odd) { 
+    background: #313131; 
+    font-size: 14px;
+    font-family: sans-serif;
+}
+
+form{
+    height: 50px;
+    width: 900px;
+    margin: 10px auto 0px;
+}
+
+#send{
+    width: 75px;
+    height: 42px;
+    outline: none;
+    position: relative;
+    display: inline-block;
+    border: solid 1px #484848;
+    color: #eee;
+    top: -1px;
+    background-color: #272727;
+}
+
+#send:hover{
+    background-color: #2f2f2f;
+    transition: all ease 0.25s;
+}
+
+#send:active{
+    background-color: #383838;
+}
+
+#message{
+    width: 799px;
+    height: 30px;
+    font-size: 18px;
+    outline: none;
+    position: relative;
+    display: inline-block;
+    border: solid 1px #484848;
+    color: #eee;
+    background-color: #272727;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}

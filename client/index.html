@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Web Chat Software</title>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script type="text/javascript" src="../client/js/jquery-3.1.1.min.js"></script>
+    <link rel="stylesheet" href="../client/style/main.css">
+</head>
+<body>
+    <div id="site-wrapper">
+        <div id="login">
+            <input placeholder="Username" type="text" id="username">
+            <button id="connect">Connect</button>
+            <p id="error"></p>
+        </div>
+        <div id="chat">
+            <ul id="messages"></ul>
+            <form>
+                <input id="message" type="text" autocomplete="off">
+                <button id="send">Send</button>
+            </form>
+        </div>
+    </div>
+<script type="text/javascript" src="../client/js/app.js"></script>
+</body>
+</html>
