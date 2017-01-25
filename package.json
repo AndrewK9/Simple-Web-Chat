@@ -1,12 +1,12 @@
 {
-    "name": "Simple Web Chat",
+    "name": "Simple-Web-Chat",
     "description": "A simple web chat software.",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "private": true,
     "dependencies": {
         "socket.io": "x",
         "express": "x",
         "errorhandler": "x",
-        "xo": "x",
+        "xo": "x"
     }
 }
