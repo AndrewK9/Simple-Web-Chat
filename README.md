@@ -1,6 +1,7 @@
 <p align="center">
 <a href="#"><img src="http://i.imgur.com/yxInXWo.png"/></a>
 
+<a href="https://travis-ci.org/AndrewK9/Simple-Web-Chat"><img src="https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square"/></a>
 <a href="https://nodejs.org/en/"><img src="https://img.shields.io/badge/platform-Node.js-brightgreen.svg?style=flat-square"/></a>
 <a href="#install"><img src="https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg?style=flat-square"/></a>
 <a href="https://github.com/sindresorhus/xo"><img src="https://img.shields.io/badge/code%20style-XO-5ed9c7.svg?style=flat-square"/></a>
