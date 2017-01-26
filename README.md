@@ -4,7 +4,6 @@
 <a href="https://travis-ci.org/AndrewK9/Simple-Web-Chat"><img src="https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square"/></a>
 <a href="https://nodejs.org/en/"><img src="https://img.shields.io/badge/platform-Node.js-brightgreen.svg?style=flat-square"/></a>
 <a href="#install"><img src="https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg?style=flat-square"/></a>
-<a href="https://github.com/sindresorhus/xo"><img src="https://img.shields.io/badge/code%20style-XO-5ed9c7.svg?style=flat-square"/></a>
 <a href="https://github.com/AndrewK9/Simple-Web-Chat/issues"><img src="https://img.shields.io/badge/issues-0%20open-brightgreen.svg?style=flat-square"/></a>
 <a href="https://github.com/AndrewK9/Simple-Web-Chat/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgray.svg?style=flat-square"/></a>
 </p>
@@ -51,11 +50,15 @@ Kyle Andrews |
 | @andrewk9 |
 
 ## Code Style
-This project is following the [XO](https://github.com/sindresorhus/xo) style guide.
+Tabs not spaces, for this project we will be using four spaced tabs when indenting.
+All selection and iteration statements will have a beginning and ending curly brace, including single-line statements.
+```
+if(x == y) { return true; }
+```
 
 
 ## Contribute
-Feel free to [open an issue](https://github.com/AndrewK9/Resort-Visualizer/issues) or clone this repo and start working.
+Feel free to [open an issue](https://github.com/AndrewK9/Simple-Web-Chat/issues) or clone this repo and start working.
 
 ## License
 [MIT](https://github.com/AndrewK9/Simple-Web-Chat/blob/master/LICENSE) (c) Kyle Andrews
